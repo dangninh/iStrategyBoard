@@ -45,11 +45,14 @@ class DNBoardViewModel{
             realm.add(play,update:true)
         }
     }
-    func duplicateLastScene(){
-        
+    func duplicateCurrentScene(){
+        let copyScene = play.scenes[currentSceneIndex].duplicate()
+        currentSceneIndex += 1
+        play.scenes.insert(copyScene, at: currentSceneIndex)
     }
-    func addItemToCurrentScene(){
-        
+    func add(item:DNSceneItem){
+        let currentScene = play.scenes[currentSceneIndex]
+        currentScene.sceneItems.append(item)
     }
     func addItems(from formation:DNFormation, to side:DNSide){
         

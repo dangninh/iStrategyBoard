@@ -30,6 +30,13 @@ class DNItem: Object {
         let realm = try! Realm()
         return (realm.objects(DNItem.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
+    static func newItem(with type:DNItemType)->DNItem{
+        let newitem = DNItem()
+        newitem.id = nextID()
+        newitem.type = type
+        newitem.info = nil
+        return newitem
+    }
 }
 class DNPlayerInfo: Object{
     dynamic var name = ""
@@ -45,5 +52,12 @@ class DNSceneItem:Object{
         copy.x_pos = self.x_pos
         copy.y_pos = self.y_pos
         return copy
+    }
+    static func newSceneItem(with type:DNItemType)->DNSceneItem{
+        let newSceneItem = DNSceneItem()
+        newSceneItem.item = DNItem.newItem(with: type)
+        newSceneItem.x_pos = 0.5
+        newSceneItem.y_pos = 0.5
+        return newSceneItem
     }
 }

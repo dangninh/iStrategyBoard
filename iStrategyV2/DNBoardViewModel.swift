@@ -8,6 +8,8 @@
 
 import Foundation
 import RealmSwift
+import RxSwift
+import RxCocoa
 class DNFormation{
     
 }
@@ -28,17 +30,22 @@ struct DNPlaySetting{
 class DNBoardViewModel{
     var play:DNPlay
     var currentSceneIndex = 0
+    var currentScene : Variable<DNScene>
     let realm = try! Realm()
     init(){
         play = DNPlay()
         play.id = DNPlay.nextID()
-        play.scenes.append(DNScene())
+        let newScene = DNScene()
+        currentScene = Variable(newScene)
+        play.scenes.append(newScene)
         try! realm.write {
             realm.add(play)
         }
     }
     init(with oldplay:DNPlay){
         play=oldplay
+        currentSceneIndex = 0
+        currentScene = Variable(play.scenes.first ?? DNScene())
     }
     func save(){
         try! realm.write {

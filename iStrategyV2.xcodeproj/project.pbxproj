@@ -15,6 +15,8 @@
 		8F36CAB41F4D368400062BC4 /* DNScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36CAB31F4D368400062BC4 /* DNScene.swift */; };
 		8F36CAB61F4D532C00062BC4 /* DNPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36CAB51F4D532C00062BC4 /* DNPlay.swift */; };
 		8F36CAB91F4D765C00062BC4 /* DNBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36CAB81F4D765C00062BC4 /* DNBoardViewModel.swift */; };
+		8F4569111F5D5993007B24C9 /* DNBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4569101F5D5993007B24C9 /* DNBoardView.swift */; };
+		8F4569131F5D5A5D007B24C9 /* DNItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4569121F5D5A5D007B24C9 /* DNItemView.swift */; };
 		9474D5571EE25E4700D59BDE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9474D5561EE25E4700D59BDE /* AppDelegate.swift */; };
 		9474D5591EE25E4700D59BDE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9474D5581EE25E4700D59BDE /* ViewController.swift */; };
 		9474D55C1EE25E4700D59BDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9474D55A1EE25E4700D59BDE /* Main.storyboard */; };
@@ -50,6 +52,8 @@
 		8F36CAB31F4D368400062BC4 /* DNScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNScene.swift; sourceTree = "<group>"; };
 		8F36CAB51F4D532C00062BC4 /* DNPlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNPlay.swift; sourceTree = "<group>"; };
 		8F36CAB81F4D765C00062BC4 /* DNBoardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNBoardViewModel.swift; sourceTree = "<group>"; };
+		8F4569101F5D5993007B24C9 /* DNBoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNBoardView.swift; sourceTree = "<group>"; };
+		8F4569121F5D5A5D007B24C9 /* DNItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNItemView.swift; sourceTree = "<group>"; };
 		9474D5531EE25E4700D59BDE /* iStrategyV2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iStrategyV2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9474D5561EE25E4700D59BDE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9474D5581EE25E4700D59BDE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 		94C797D21F1E634E00240462 /* BoardView */ = {
 			isa = PBXGroup;
 			children = (
+				8F4569101F5D5993007B24C9 /* DNBoardView.swift */,
 			);
 			name = BoardView;
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 		94C797D31F1E636800240462 /* PlayerView */ = {
 			isa = PBXGroup;
 			children = (
+				8F4569121F5D5A5D007B24C9 /* DNItemView.swift */,
 			);
 			name = PlayerView;
 			sourceTree = "<group>";
@@ -411,6 +417,7 @@
 			files = (
 				8F36CAB01F4C18D000062BC4 /* DNVideoFileOutput.swift in Sources */,
 				8F36CAAE1F4C165D00062BC4 /* DNVideoOutput.swift in Sources */,
+				8F4569111F5D5993007B24C9 /* DNBoardView.swift in Sources */,
 				8F36CAAC1F4C15DE00062BC4 /* DNVideoCapture.swift in Sources */,
 				8F36CAB41F4D368400062BC4 /* DNScene.swift in Sources */,
 				8F36CAB91F4D765C00062BC4 /* DNBoardViewModel.swift in Sources */,
@@ -418,6 +425,7 @@
 				8F36CAB21F4D367400062BC4 /* DNItem.swift in Sources */,
 				9474D5571EE25E4700D59BDE /* AppDelegate.swift in Sources */,
 				8F36CAB61F4D532C00062BC4 /* DNPlay.swift in Sources */,
+				8F4569131F5D5A5D007B24C9 /* DNItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

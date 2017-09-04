@@ -13,6 +13,28 @@ enum DNItemType: String {
     case PlayerAway = "PlayerAway"
     case Ball = "Ball"
     case Cone = "Cone"
+    func image()->UIImage?{
+        switch self {
+        case .PlayerHome,.PlayerAway:
+            return UIImage(named: "Player")?.withRenderingMode(.alwaysTemplate)
+        case .Ball:
+            return UIImage(named: "Ball")?.withRenderingMode(.alwaysOriginal)
+        case .Cone:
+            return UIImage(named: "Cone")?.withRenderingMode(.alwaysOriginal)
+        default:
+            return nil
+        }
+    }
+    func color()->UIColor{
+        switch self {
+        case .PlayerHome:
+            return (UserDefaults.standard.object(forKey: "HomeColor") as? UIColor) ?? UIColor.white
+        case .PlayerAway:
+            return (UserDefaults.standard.object(forKey: "AwayColor") as? UIColor) ?? UIColor.black
+        default:
+            return UIColor.clear
+        }
+    }
 }
 class DNItem: Object {
     private dynamic var privateType = DNItemType.PlayerHome.rawValue
@@ -60,4 +82,8 @@ class DNSceneItem:Object{
         newSceneItem.y_pos = 0.5
         return newSceneItem
     }
+    func centerPoint(in rect:CGRect)->CGPoint{
+        return CGPoint(x:rect.origin.x + CGFloat(x_pos)*rect.width,y:rect.origin.y + CGFloat(y_pos)*rect.height)
+    }
+    
 }

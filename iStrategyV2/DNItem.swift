@@ -13,16 +13,14 @@ enum DNItemType: String {
     case PlayerAway = "PlayerAway"
     case Ball = "Ball"
     case Cone = "Cone"
-    func image()->UIImage?{
+    func image()->UIImage{
         switch self {
         case .PlayerHome,.PlayerAway:
-            return UIImage(named: "Player")?.withRenderingMode(.alwaysTemplate)
+            return UIImage(named: (UserDefaults.standard.string(forKey: "PlayerImage") ?? "Player"))!.withRenderingMode(.alwaysTemplate)
         case .Ball:
-            return UIImage(named: "Ball")?.withRenderingMode(.alwaysOriginal)
+            return UIImage(named: "Ball")!.withRenderingMode(.alwaysOriginal)
         case .Cone:
-            return UIImage(named: "Cone")?.withRenderingMode(.alwaysOriginal)
-        default:
-            return nil
+            return UIImage(named: "Cone")!.withRenderingMode(.alwaysOriginal)
         }
     }
     func color()->UIColor{

@@ -8,19 +8,29 @@
 
 import UIKit
 import RxSwift
+import Floaty
+enum FloatyTitle:String{
+    case AddHome = "Add Home Player"
+    case AddAway = "Add Away Player"
+    case AddBall = "Add Ball"
+    case AddCone = "Add Cone"
+    case AddScene = "Add Scence"
+}
 class ViewController: UIViewController {
-    @IBOutlet weak var button: UIButton!
+    var boardViewModel:DNBoardViewModel?
+    
+    
     var capture:DNVideoCapture?
     var disposeBag = DisposeBag()
+    @IBOutlet var boardView:DNBoardView!
+    
 	override func viewDidLoad() {
-        capture = DNVideoCapture(view: self.view)
+        capture = DNVideoCapture(view: self.boardView)
+        boardViewModel = DNBoardViewModel()
+        boardViewModel!.currentScene.asDriver().drive(boardView.rx.scene).disposed(by: disposeBag)
+        self.createFloatMenu()
 		super.viewDidLoad()
-        Observable<Int>.interval(0.5, scheduler: MainScheduler.instance)
-            .subscribe({ sec -> Void in
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.button.frame = CGRect(x:CGFloat(drand48())*self.view.frame.size.width, y: CGFloat(drand48())*self.view.frame.size.height, width:self.button.frame.size.width,height:self.button.frame.size.height)
-                })
-            }).addDisposableTo(disposeBag)
+        
 		// Do any additional setup after loading the view, typically from a nib.
 	}
 	
@@ -28,15 +38,36 @@ class ViewController: UIViewController {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-    @IBAction func buttonTapped(_ sender: Any) {
-        let button = sender as! UIButton
-        button.isSelected = !(button.isSelected)
-        if !capture!.isRecording{
-            capture!.startRecording()
-        }else{
-            capture!.stop()
+    func createFloatMenu(){
+        let floaty = Floaty()
+        let handler: ((FloatyItem) -> Void) = { item in
+            if let itemTitle = FloatyTitle(rawValue: item.title ?? ""){
+                switch itemTitle{
+                case .AddHome:
+                    self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.PlayerHome))
+                    self.boardViewModel?.refresh()
+                case .AddScene:
+                    self.boardViewModel?.duplicateCurrentScene()
+                default:
+                    break
+                }
+            }
         }
+        floaty.addItem(title: FloatyTitle.AddHome.rawValue, handler: handler)
+        floaty.addItem(title: FloatyTitle.AddAway.rawValue, handler: handler)
+        floaty.addItem(title: FloatyTitle.AddCone.rawValue, handler: handler)
+        floaty.addItem(title: FloatyTitle.AddScene.rawValue, handler: handler)
+        
+        self.view.addSubview(floaty)
+    }
+    
+    override func viewDidLayoutSubviews(){
+        super.viewDidLayoutSubviews()
+        self.boardViewModel?.refresh()
     }
 }
-
+extension FloatyItem{
+}
+class ReactiveFloatyItem:FloatyItem{
+    
+}

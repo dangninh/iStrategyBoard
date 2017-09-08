@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import RealmSwift
 extension Reactive where Base: DNBoardView {
     var scene: UIBindingObserver<Base, DNScene?> {
         return scene(transitionType: nil)
@@ -28,35 +29,63 @@ extension Reactive where Base: DNBoardView {
             else {
                 view.layer.removeAllAnimations()
             }
+            
             if let curscene = scene{
-                for item in curscene.sceneItems{
+                UIView.beginAnimations("rearangeViews", context: nil)
+                UIView.setAnimationDuration(0.5)
+                
+                view.disposeBag = DisposeBag()
+                //
+                for itemscene in curscene.sceneItems{
                     //find the item in current hashtable
-                    if let itemview = view.itemhash[item]{
+                    if let myitem = itemscene.item, let itemview = view.itemhash[myitem]{
                         //found: just update the center
-                        itemview.center = item.centerPoint(in: view.bounds)
+                        itemview.center = itemscene.centerPoint(in: view.bounds)
+                        itemview.positionVal.asObservable().subscribe(onNext: { (val) in
+                            try! Realm().write {
+                                itemscene.x_pos = val.0
+                                itemscene.y_pos = val.1
+                            }
+                            
+                        }).disposed(by: view.disposeBag)
                     }else{
                         //not found, create the view, add subview, update the hashtable
-                        if let type = item.item?.type{
-                            let itemview = DNItemView(withType: type)
-                            itemview.center = item.centerPoint(in: view.bounds)
-                            view.addSubview(itemview)
+                        print("\(String(describing: itemscene.item)), view.itemhash = \(view.itemhash)")
+                        if let item = itemscene.item{
+                            let itemview = DNItemView(withItem: item)
+                            itemview.positionVal.value = (itemscene.x_pos,itemscene.y_pos)
+                            itemview.center = itemscene.centerPoint(in: view.bounds)
+                            
+                            itemview.positionVal.asObservable().subscribe(onNext: { (val) in
+                                try! Realm().write {
+                                    itemscene.x_pos = val.0
+                                    itemscene.y_pos = val.1
+                                }
+                                
+                            }).disposed(by: view.disposeBag)
                             view.itemhash[item] = itemview
+                            view.addSubview(itemview)
+                            
                         }
                     }
                 }
                 //remove view no longer in the scene
+                let items = curscene.sceneItems.flatMap({ $0.item })
+                
                 for (item,itemview) in view.itemhash{
-                    if curscene.sceneItems.index(of: item) == nil{
+                    if !items.contains(item){
                         itemview.removeFromSuperview()
-                        //todo: remove from the hash?
                     }
                 }
+                UIView.commitAnimations()
             }
             
         }
     }
+    
 }
 
 class DNBoardView:UIView{
-    fileprivate var itemhash:[DNSceneItem:DNItemView] = [:]
+    var itemhash:[DNItem:DNItemView] = [:]
+    var disposeBag = DisposeBag()
 }

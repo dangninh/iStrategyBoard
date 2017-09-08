@@ -47,6 +47,9 @@ class DNBoardViewModel{
         currentSceneIndex = 0
         currentScene = Variable(play.scenes.first ?? DNScene())
     }
+    func refresh(){
+        currentScene.value = currentScene.value
+    }
     func save(){
         try! realm.write {
             realm.add(play,update:true)
@@ -56,10 +59,13 @@ class DNBoardViewModel{
         let copyScene = play.scenes[currentSceneIndex].duplicate()
         currentSceneIndex += 1
         play.scenes.insert(copyScene, at: currentSceneIndex)
+        currentScene.value = copyScene
     }
     func add(item:DNSceneItem){
-        let currentScene = play.scenes[currentSceneIndex]
-        currentScene.sceneItems.append(item)
+        try! realm.write {
+            let currentScene = play.scenes[currentSceneIndex]
+            currentScene.sceneItems.append(item)
+        }
     }
     func addItems(from formation:DNFormation, to side:DNSide){
         

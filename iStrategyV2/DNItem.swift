@@ -16,7 +16,7 @@ enum DNItemType: String {
     func image()->UIImage{
         switch self {
         case .PlayerHome,.PlayerAway:
-            return UIImage(named: (UserDefaults.standard.string(forKey: "PlayerImage") ?? "Player"))!.withRenderingMode(.alwaysTemplate)
+            return UIImage(named: (UserDefaults.standard.string(forKey: "PlayerImage") ?? "Shirt"))!.withRenderingMode(.alwaysTemplate)
         case .Ball:
             return UIImage(named: "Ball")!.withRenderingMode(.alwaysOriginal)
         case .Cone:
@@ -26,7 +26,7 @@ enum DNItemType: String {
     func color()->UIColor{
         switch self {
         case .PlayerHome:
-            return (UserDefaults.standard.object(forKey: "HomeColor") as? UIColor) ?? UIColor.white
+            return (UserDefaults.standard.object(forKey: "HomeColor") as? UIColor) ?? UIColor.red
         case .PlayerAway:
             return (UserDefaults.standard.object(forKey: "AwayColor") as? UIColor) ?? UIColor.black
         default:
@@ -81,7 +81,12 @@ class DNSceneItem:Object{
         return newSceneItem
     }
     func centerPoint(in rect:CGRect)->CGPoint{
-        return CGPoint(x:rect.origin.x + CGFloat(x_pos)*rect.width,y:rect.origin.y + CGFloat(y_pos)*rect.height)
+        if rect.size.width>rect.size.height{
+            return CGPoint(x:rect.origin.x + CGFloat(y_pos)*rect.width,y:rect.origin.y + CGFloat(x_pos)*rect.height)
+            
+        }else{
+            return CGPoint(x:rect.origin.x + CGFloat(x_pos)*rect.width,y:rect.origin.y + rect.height - CGFloat(y_pos)*rect.height)
+        }
+        
     }
-    
 }

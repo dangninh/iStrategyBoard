@@ -46,6 +46,15 @@ class ViewController: UIViewController {
                 case .AddHome:
                     self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.PlayerHome))
                     self.boardViewModel?.refresh()
+				case .AddAway:
+					self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.PlayerAway))
+					self.boardViewModel?.refresh()
+				case .AddCone:
+					self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.Cone))
+					self.boardViewModel?.refresh()
+				case .AddBall:
+					self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.Ball))
+					self.boardViewModel?.refresh()
                 case .AddScene:
                     self.boardViewModel?.duplicateCurrentScene()
                 default:

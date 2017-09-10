@@ -18,9 +18,9 @@ enum DNItemType: String {
         case .PlayerHome,.PlayerAway:
             return UIImage(named: (UserDefaults.standard.string(forKey: "PlayerImage") ?? "Shirt"))!.withRenderingMode(.alwaysTemplate)
         case .Ball:
-            return UIImage(named: "Ball")!.withRenderingMode(.alwaysOriginal)
+            return UIImage(named: "ball")!.withRenderingMode(.alwaysOriginal)
         case .Cone:
-            return UIImage(named: "Cone")!.withRenderingMode(.alwaysOriginal)
+            return UIImage(named: "cone")!.withRenderingMode(.alwaysOriginal)
         }
     }
     func color()->UIColor{

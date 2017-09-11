@@ -16,49 +16,58 @@ extension Reactive where Base: DNBoardView {
         return UIBindingObserver(UIElement: base) { view, scene in
             if let curscene = scene{
                 UIView.beginAnimations("rearangeViews", context: nil)
-                UIView.setAnimationDuration(0.5)
+                UIView.setAnimationDuration(0.2)
                 
                 view.disposeBag = DisposeBag()
                 //
                 for itemscene in curscene.sceneItems{
                     //find the item in current hashtable
-                    if let myitem = itemscene.item, let itemview = view.itemhash[myitem]{
-                        //found: just update the center
-                        itemview.center = itemscene.centerPoint(in: view.bounds)
-                        itemview.positionVal.asObservable().subscribe(onNext: { (val) in
-                            try! Realm().write {
-                                itemscene.x_pos = val.0
-                                itemscene.y_pos = val.1
-                            }
-                            
-                        }).disposed(by: view.disposeBag)
-                    }else{
-                        //not found, create the view, add subview, update the hashtable
-                        print("\(String(describing: itemscene.item)), view.itemhash = \(view.itemhash)")
-                        if let item = itemscene.item{
-                            let itemview = DNItemView(withItem: item)
-                            itemview.positionVal.value = (itemscene.x_pos,itemscene.y_pos)
-                            itemview.center = itemscene.centerPoint(in: view.bounds)
-                            
-                            itemview.positionVal.asObservable().subscribe(onNext: { (val) in
-                                try! Realm().write {
-                                    itemscene.x_pos = val.0
-                                    itemscene.y_pos = val.1
-                                }
-                                
-                            }).disposed(by: view.disposeBag)
-                            view.itemhash[item] = itemview
-                            view.addSubview(itemview)
-                            
-                        }
-                    }
+					if let myitem = itemscene.item{
+						if let centerpoint = itemscene.centerPoint(in: view.bounds){//item need to be shown
+							if let itemview = view.itemhash[myitem]{
+								//found: just update the center
+								itemview.center = centerpoint
+							}
+							else{
+								//not found, create the view, add subview, update the hashtable
+								print("\(String(describing: itemscene.item)), view.itemhash = \(view.itemhash)")
+								let itemview = DNItemView(withItem: myitem)
+								itemview.center = centerpoint
+								view.itemhash[myitem] = itemview
+								view.addSubview(itemview)
+							}
+							if let nextcenterpoint = itemscene.nextCenterPoint(in: view.bounds){
+								if let nextitemview = view.nextitemhash[myitem]{
+									//found next view: just update the center
+									nextitemview.center = nextcenterpoint
+								}
+								else{
+									//not found next view:, create the view, add subview, update the hashtable
+									let nextitemview = DNItemView(withItem: myitem)
+									nextitemview.alpha = 0.5 //alpha as 0.5 for next view
+									nextitemview.center = nextcenterpoint
+									view.nextitemhash[myitem] = nextitemview
+									view.addSubview(nextitemview)
+								}
+							}
+							
+						}else{
+							//item shouldn't be shown
+							if let itemview = view.itemhash[myitem]{
+								itemview.removeFromSuperview()
+							}
+							if let nextitemview = view.nextitemhash[myitem]{
+								nextitemview.removeFromSuperview()
+							}
+						}
+					}
                 }
                 //remove view no longer in the scene
                 let items = curscene.sceneItems.flatMap({ $0.item })
-                
                 for (item,itemview) in view.itemhash{
                     if !items.contains(item){
                         itemview.removeFromSuperview()
+						view.nextitemhash[item]?.removeFromSuperview()
                     }
                 }
                 UIView.commitAnimations()
@@ -72,6 +81,7 @@ extension Reactive where Base: DNBoardView {
 
 class DNBoardView:UIView{
     var disposeBag: DisposeBag?
+	var inMovingMode : Bool = false
     var viewModel : DNBoardViewModel?{
         didSet{
             let disposeBag = DisposeBag()
@@ -82,5 +92,5 @@ class DNBoardView:UIView{
         }
     }
     var itemhash:[DNItem:DNItemView] = [:]
-    
+    var nextitemhash:[DNItem:DNItemView] = [:]
 }

@@ -82,7 +82,10 @@ class DNSceneItem:Object{
         newSceneItem.y_pos = 0.5
         return newSceneItem
     }
-    func centerPoint(in rect:CGRect)->CGPoint{
+    func centerPoint(in rect:CGRect)->CGPoint?{
+		if x_pos<0 || x_pos>1 || y_pos<0 || y_pos>1 {
+			return nil
+		}
         if rect.size.width>rect.size.height{
             return CGPoint(x:rect.origin.x + CGFloat(y_pos)*rect.width,y:rect.origin.y + CGFloat(x_pos)*rect.height)
             
@@ -91,4 +94,15 @@ class DNSceneItem:Object{
         }
         
     }
+	func nextCenterPoint(in rect:CGRect)->CGPoint?{
+		if new_x_pos<0 || new_x_pos>1 || new_y_pos<0 || new_y_pos>1 {
+			return nil
+		}
+		if rect.size.width>rect.size.height{
+			return CGPoint(x:rect.origin.x + CGFloat(new_y_pos)*rect.width,y:rect.origin.y + CGFloat(new_x_pos)*rect.height)
+			
+		}else{
+			return CGPoint(x:rect.origin.x + CGFloat(new_x_pos)*rect.width,y:rect.origin.y + rect.height - CGFloat(new_y_pos)*rect.height)
+		}
+	}
 }

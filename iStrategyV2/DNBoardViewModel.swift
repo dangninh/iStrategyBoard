@@ -70,4 +70,20 @@ class DNBoardViewModel{
     func addItems(from formation:DNFormation, to side:DNSide){
         
     }
+	func update(item:DNItem, current pos_x : Float, pos_y : Float){
+		if let sceneitem = currentScene.value.getSceneItem(for: item){
+			try! realm.write {
+				sceneitem.x_pos = pos_x
+				sceneitem.y_pos = pos_y
+			}
+		}
+	}
+	func update(item:DNItem, next pos_x : Float, pos_y : Float){
+		if let sceneitem = currentScene.value.getSceneItem(for: item){
+			try! realm.write {
+				sceneitem.new_x_pos = pos_x
+				sceneitem.new_y_pos = pos_y
+			}
+		}
+	}
 }

@@ -17,4 +17,12 @@ class DNScene: Object {
         }
         return copy
     }
+	func getSceneItem(for item:DNItem)->DNSceneItem?{
+		for sceneitem in self.sceneItems{
+			if sceneitem.item == item{
+				return sceneitem
+			}
+		}
+		return nil
+	}
 }

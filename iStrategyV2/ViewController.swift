@@ -27,7 +27,8 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
         capture = DNVideoCapture(view: self.boardView)
         boardViewModel = DNBoardViewModel()
-        boardViewModel!.currentScene.asDriver().drive(boardView.rx.scene).disposed(by: disposeBag)
+        self.boardView.viewModel = boardViewModel
+        
         self.createFloatMenu()
 		super.viewDidLoad()
         

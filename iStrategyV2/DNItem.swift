@@ -66,6 +66,8 @@ class DNSceneItem:Object{
     dynamic var item:DNItem?
     dynamic var x_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
     dynamic var y_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
+    dynamic var new_x_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
+    dynamic var new_y_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
     func duplicate()->DNSceneItem{
         let copy = DNSceneItem()
         copy.item = self.item //use old item

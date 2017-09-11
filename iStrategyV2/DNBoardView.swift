@@ -13,23 +13,7 @@ import RxCocoa
 import RealmSwift
 extension Reactive where Base: DNBoardView {
     var scene: UIBindingObserver<Base, DNScene?> {
-        return scene(transitionType: nil)
-    }
-    func scene(transitionType: String? = nil) -> UIBindingObserver<Base, DNScene?> {
         return UIBindingObserver(UIElement: base) { view, scene in
-            if let transitionType = transitionType {
-                if scene != nil {
-                    let transition = CATransition()
-                    transition.duration = 0.25
-                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                    transition.type = transitionType
-                    view.layer.add(transition, forKey: kCATransition)
-                }
-            }
-            else {
-                view.layer.removeAllAnimations()
-            }
-            
             if let curscene = scene{
                 UIView.beginAnimations("rearangeViews", context: nil)
                 UIView.setAnimationDuration(0.5)
@@ -83,9 +67,20 @@ extension Reactive where Base: DNBoardView {
         }
     }
     
+    
 }
 
 class DNBoardView:UIView{
+    var disposeBag: DisposeBag?
+    var viewModel : DNBoardViewModel?{
+        didSet{
+            let disposeBag = DisposeBag()
+            if let vm = viewModel{
+                vm.currentScene.asDriver().drive(self.rx.scene).disposed(by: disposeBag)
+            }
+            self.disposeBag = disposeBag
+        }
+    }
     var itemhash:[DNItem:DNItemView] = [:]
-    var disposeBag = DisposeBag()
+    
 }

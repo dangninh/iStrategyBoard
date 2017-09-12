@@ -42,6 +42,28 @@ class DNBoardViewModel{
             realm.add(play)
         }
     }
+    init(restore isRestore:Bool){
+        if isRestore{
+            play = realm.objects(DNPlay.self).last ?? DNPlay()
+            currentSceneIndex = 0
+            currentScene = Variable(play.scenes.first ?? DNScene())
+            try! realm.write {
+                realm.add(play,update:true)
+            }
+        }
+        else{
+            play = DNPlay()
+            play.id = DNPlay.nextID()
+            let newScene = DNScene()
+            currentScene = Variable(newScene)
+            play.scenes.append(newScene)
+            try! realm.write {
+                realm.add(play)
+            }
+        }
+        
+        
+    }
     init(with oldplay:DNPlay){
         play=oldplay
         currentSceneIndex = 0
@@ -63,9 +85,11 @@ class DNBoardViewModel{
     }
     func add(item:DNSceneItem){
         try! realm.write {
-            let currentScene = play.scenes[currentSceneIndex]
-            currentScene.sceneItems.append(item)
+            //let currentScene = play.scenes[currentSceneIndex]
+            currentScene.value.sceneItems.append(item)
+            self.refresh()
         }
+        
     }
     func addItems(from formation:DNFormation, to side:DNSide){
         
@@ -75,15 +99,19 @@ class DNBoardViewModel{
 			try! realm.write {
 				sceneitem.x_pos = pos_x
 				sceneitem.y_pos = pos_y
+                self.refresh()
 			}
+            
 		}
 	}
 	func update(item:DNItem, next pos_x : Float, pos_y : Float){
 		if let sceneitem = currentScene.value.getSceneItem(for: item){
 			try! realm.write {
-				sceneitem.new_x_pos = pos_x
-				sceneitem.new_y_pos = pos_y
+				sceneitem.next_x_pos = pos_x
+				sceneitem.next_y_pos = pos_y
+                self.refresh()
 			}
+            
 		}
 	}
 }

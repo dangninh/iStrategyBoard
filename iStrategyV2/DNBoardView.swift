@@ -15,10 +15,12 @@ extension Reactive where Base: DNBoardView {
     var scene: UIBindingObserver<Base, DNScene?> {
         return UIBindingObserver(UIElement: base) { view, scene in
             if let curscene = scene{
+                view.shapeLayer.removeFromSuperlayer()
+                let paths = CGMutablePath()
+                
                 UIView.beginAnimations("rearangeViews", context: nil)
                 UIView.setAnimationDuration(0.2)
                 
-                view.disposeBag = DisposeBag()
                 //
                 for itemscene in curscene.sceneItems{
                     //find the item in current hashtable
@@ -31,26 +33,36 @@ extension Reactive where Base: DNBoardView {
 							else{
 								//not found, create the view, add subview, update the hashtable
 								print("\(String(describing: itemscene.item)), view.itemhash = \(view.itemhash)")
-								let itemview = DNItemView(withItem: myitem)
-								itemview.center = centerpoint
+								let itemview = DNItemView(withItem: myitem, nextView: false)
+                                itemview.center = centerpoint
 								view.itemhash[myitem] = itemview
 								view.addSubview(itemview)
 							}
+                            
 							if let nextcenterpoint = itemscene.nextCenterPoint(in: view.bounds){
+                                let path = UIBezierPath()
+                                path.move(to: centerpoint)
+                                
 								if let nextitemview = view.nextitemhash[myitem]{
 									//found next view: just update the center
 									nextitemview.center = nextcenterpoint
 								}
 								else{
 									//not found next view:, create the view, add subview, update the hashtable
-									let nextitemview = DNItemView(withItem: myitem)
+									let nextitemview = DNItemView(withItem: myitem, nextView: true)
 									nextitemview.alpha = 0.5 //alpha as 0.5 for next view
 									nextitemview.center = nextcenterpoint
 									view.nextitemhash[myitem] = nextitemview
 									view.addSubview(nextitemview)
 								}
+                                
+                                //myitem.type.color().set()
+                                
+                                path.lineWidth = 3.0
+                                path.lineCapStyle = .butt
+                                path.addLine(to: nextcenterpoint)
+                                paths.addPath(path.cgPath)
 							}
-							
 						}else{
 							//item shouldn't be shown
 							if let itemview = view.itemhash[myitem]{
@@ -61,7 +73,15 @@ extension Reactive where Base: DNBoardView {
 							}
 						}
 					}
+                    
                 }
+                
+                view.shapeLayer.strokeColor = UIColor.gray.cgColor
+                view.shapeLayer.opacity = 1.0
+                
+                view.shapeLayer.lineDashPattern = [ 5.0, 6.0 ]
+                view.shapeLayer.path = paths
+                view.layer.addSublayer(view.shapeLayer)
                 //remove view no longer in the scene
                 let items = curscene.sceneItems.flatMap({ $0.item })
                 for (item,itemview) in view.itemhash{
@@ -70,10 +90,11 @@ extension Reactive where Base: DNBoardView {
 						view.nextitemhash[item]?.removeFromSuperview()
                     }
                 }
+                
                 UIView.commitAnimations()
             }
-            
         }
+        
     }
     
     
@@ -81,14 +102,25 @@ extension Reactive where Base: DNBoardView {
 
 class DNBoardView:UIView{
     var disposeBag: DisposeBag?
-	var inMovingMode : Bool = false
+    var shapeLayer = CAShapeLayer()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.layer.addSublayer(shapeLayer)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.addSublayer(shapeLayer)
+    }
     var viewModel : DNBoardViewModel?{
         didSet{
-            let disposeBag = DisposeBag()
+            let disposebag = DisposeBag()
             if let vm = viewModel{
-                vm.currentScene.asDriver().drive(self.rx.scene).disposed(by: disposeBag)
+                //Observable.from(object: vm.currentScene).bind(to: self.rx.scene).disposed(by: disposebag)
+                
+                vm.currentScene.asDriver().drive(self.rx.scene).disposed(by: disposebag)
             }
-            self.disposeBag = disposeBag
+            self.disposeBag = disposebag
         }
     }
     var itemhash:[DNItem:DNItemView] = [:]

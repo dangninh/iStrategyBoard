@@ -16,7 +16,7 @@ enum DNItemType: String {
     func image()->UIImage{
         switch self {
         case .PlayerHome,.PlayerAway:
-            return UIImage(named: (UserDefaults.standard.string(forKey: "PlayerImage") ?? "Shirt"))!.withRenderingMode(.alwaysTemplate)
+            return UIImage(named: (UserDefaults.standard.string(forKey: "PlayerImage") ?? "shirt"))!.withRenderingMode(.alwaysTemplate)
         case .Ball:
             return UIImage(named: "ball")!.withRenderingMode(.alwaysOriginal)
         case .Cone:
@@ -66,8 +66,8 @@ class DNSceneItem:Object{
     dynamic var item:DNItem?
     dynamic var x_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
     dynamic var y_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
-    dynamic var new_x_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
-    dynamic var new_y_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
+    dynamic var next_x_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
+    dynamic var next_y_pos:Float = -1.0 //must be between 0..1, all other value will be treated as outside current scene
     func duplicate()->DNSceneItem{
         let copy = DNSceneItem()
         copy.item = self.item //use old item
@@ -80,6 +80,8 @@ class DNSceneItem:Object{
         newSceneItem.item = DNItem.newItem(with: type)
         newSceneItem.x_pos = 0.5
         newSceneItem.y_pos = 0.5
+        newSceneItem.next_x_pos = -1
+        newSceneItem.next_y_pos = -1
         return newSceneItem
     }
     func centerPoint(in rect:CGRect)->CGPoint?{
@@ -95,14 +97,14 @@ class DNSceneItem:Object{
         
     }
 	func nextCenterPoint(in rect:CGRect)->CGPoint?{
-		if new_x_pos<0 || new_x_pos>1 || new_y_pos<0 || new_y_pos>1 {
+		if next_x_pos<0 || next_x_pos>1 || next_y_pos<0 || next_y_pos>1 {
 			return nil
 		}
 		if rect.size.width>rect.size.height{
-			return CGPoint(x:rect.origin.x + CGFloat(new_y_pos)*rect.width,y:rect.origin.y + CGFloat(new_x_pos)*rect.height)
+			return CGPoint(x:rect.origin.x + CGFloat(next_y_pos)*rect.width,y:rect.origin.y + CGFloat(next_x_pos)*rect.height)
 			
 		}else{
-			return CGPoint(x:rect.origin.x + CGFloat(new_x_pos)*rect.width,y:rect.origin.y + rect.height - CGFloat(new_y_pos)*rect.height)
+			return CGPoint(x:rect.origin.x + CGFloat(next_x_pos)*rect.width,y:rect.origin.y + rect.height - CGFloat(next_y_pos)*rect.height)
 		}
 	}
 }

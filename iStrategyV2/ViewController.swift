@@ -17,7 +17,6 @@ enum FloatyTitle:String{
     case AddScene = "Add Scence"
 }
 class ViewController: UIViewController {
-    var boardViewModel:DNBoardViewModel?
     
     
     var capture:DNVideoCapture?
@@ -26,8 +25,7 @@ class ViewController: UIViewController {
     
 	override func viewDidLoad() {
         capture = DNVideoCapture(view: self.boardView)
-        boardViewModel = DNBoardViewModel()
-        self.boardView.viewModel = boardViewModel
+        self.boardView.viewModel = DNBoardViewModel(restore:true)
         
         self.createFloatMenu()
 		super.viewDidLoad()
@@ -45,19 +43,15 @@ class ViewController: UIViewController {
             if let itemTitle = FloatyTitle(rawValue: item.title ?? ""){
                 switch itemTitle{
                 case .AddHome:
-                    self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.PlayerHome))
-                    self.boardViewModel?.refresh()
+                    self.boardView.viewModel?.add(item: DNSceneItem.newSceneItem(with:.PlayerHome))
 				case .AddAway:
-					self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.PlayerAway))
-					self.boardViewModel?.refresh()
+					self.boardView.viewModel?.add(item: DNSceneItem.newSceneItem(with:.PlayerAway))
 				case .AddCone:
-					self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.Cone))
-					self.boardViewModel?.refresh()
+					self.boardView.viewModel?.add(item: DNSceneItem.newSceneItem(with:.Cone))
 				case .AddBall:
-					self.boardViewModel?.add(item: DNSceneItem.newSceneItem(with:.Ball))
-					self.boardViewModel?.refresh()
+					self.boardView.viewModel?.add(item: DNSceneItem.newSceneItem(with:.Ball))
                 case .AddScene:
-                    self.boardViewModel?.duplicateCurrentScene()
+                    self.boardView.viewModel?.duplicateCurrentScene()
                 default:
                     break
                 }
@@ -73,7 +67,7 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews(){
         super.viewDidLayoutSubviews()
-        self.boardViewModel?.refresh()
+        //self.boardViewModel?.refresh()
     }
 }
 extension FloatyItem{

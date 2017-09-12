@@ -71,8 +71,16 @@ class DNSceneItem:Object{
     func duplicate()->DNSceneItem{
         let copy = DNSceneItem()
         copy.item = self.item //use old item
-        copy.x_pos = self.x_pos
-        copy.y_pos = self.y_pos
+		if self.next_x_pos<0 || self.next_x_pos>1 || self.next_y_pos<0 || self.next_y_pos>1 {
+			//don't have next pos so using curr pos
+			copy.x_pos = self.x_pos
+			copy.y_pos = self.y_pos
+		}
+		else{
+			copy.x_pos = self.next_x_pos
+			copy.y_pos = self.next_y_pos
+		}
+		
         return copy
     }
     static func newSceneItem(with type:DNItemType)->DNSceneItem{

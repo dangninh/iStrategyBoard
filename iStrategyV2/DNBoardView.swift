@@ -29,6 +29,7 @@ extension Reactive where Base: DNBoardView {
 							if let itemview = view.itemhash[myitem]{
 								//found: just update the center
 								itemview.center = centerpoint
+								view.addSubview(itemview)
 							}
 							else{
 								//not found, create the view, add subview, update the hashtable
@@ -38,31 +39,42 @@ extension Reactive where Base: DNBoardView {
 								view.itemhash[myitem] = itemview
 								view.addSubview(itemview)
 							}
-                            
-							if let nextcenterpoint = itemscene.nextCenterPoint(in: view.bounds){
-                                let path = UIBezierPath()
-                                path.move(to: centerpoint)
-                                
+							if !view.viewModel!.animateMode{
+								if let nextcenterpoint = itemscene.nextCenterPoint(in: view.bounds){
+									let path = UIBezierPath()
+									path.move(to: centerpoint)
+									
+									if let nextitemview = view.nextitemhash[myitem]{
+										//found next view: just update the center
+										nextitemview.center = nextcenterpoint
+										view.addSubview(nextitemview)
+									}
+									else{
+										//not found next view:, create the view, add subview, update the hashtable
+										let nextitemview = DNItemView(withItem: myitem, nextView: true)
+										nextitemview.alpha = 0.5 //alpha as 0.5 for next view
+										nextitemview.center = nextcenterpoint
+										view.nextitemhash[myitem] = nextitemview
+										view.addSubview(nextitemview)
+									}
+									
+									//myitem.type.color().set()
+									
+									path.lineWidth = 3.0
+									path.lineCapStyle = .butt
+									path.addLine(to: nextcenterpoint)
+									paths.addPath(path.cgPath)
+								}else{
+									if let nextitemview = view.nextitemhash[myitem]{
+										nextitemview.removeFromSuperview()
+									}
+								}
+							}else{
 								if let nextitemview = view.nextitemhash[myitem]{
-									//found next view: just update the center
-									nextitemview.center = nextcenterpoint
+									nextitemview.removeFromSuperview()
 								}
-								else{
-									//not found next view:, create the view, add subview, update the hashtable
-									let nextitemview = DNItemView(withItem: myitem, nextView: true)
-									nextitemview.alpha = 0.5 //alpha as 0.5 for next view
-									nextitemview.center = nextcenterpoint
-									view.nextitemhash[myitem] = nextitemview
-									view.addSubview(nextitemview)
-								}
-                                
-                                //myitem.type.color().set()
-                                
-                                path.lineWidth = 3.0
-                                path.lineCapStyle = .butt
-                                path.addLine(to: nextcenterpoint)
-                                paths.addPath(path.cgPath)
 							}
+							
 						}else{
 							//item shouldn't be shown
 							if let itemview = view.itemhash[myitem]{
@@ -103,6 +115,7 @@ extension Reactive where Base: DNBoardView {
 class DNBoardView:UIView{
     var disposeBag: DisposeBag?
     var shapeLayer = CAShapeLayer()
+	
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layer.addSublayer(shapeLayer)

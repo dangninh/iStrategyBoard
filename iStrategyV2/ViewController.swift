@@ -59,6 +59,7 @@ class ViewController: UIViewController {
         }
         floaty.addItem(title: FloatyTitle.AddHome.rawValue, handler: handler)
         floaty.addItem(title: FloatyTitle.AddAway.rawValue, handler: handler)
+		floaty.addItem(title: FloatyTitle.AddBall.rawValue, handler: handler)
         floaty.addItem(title: FloatyTitle.AddCone.rawValue, handler: handler)
         floaty.addItem(title: FloatyTitle.AddScene.rawValue, handler: handler)
         
@@ -69,6 +70,15 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
         //self.boardViewModel?.refresh()
     }
+	@IBAction func prevButtonTapped(_ sender: Any) {
+		self.boardView.viewModel?.previous()
+	}
+	@IBAction func playPause(_ sender: Any) {
+		self.boardView.viewModel?.playAnimate()
+	}
+	@IBAction func nextButtonTapped(_ sender: Any) {
+		self.boardView.viewModel?.next()
+	}
 }
 extension FloatyItem{
 }

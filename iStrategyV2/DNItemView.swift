@@ -21,7 +21,7 @@ class DNItemView:UIView{
 		isNextView = nextView
 		
         super.init(frame: CGRect(x: 0, y: 0, width: DNItemView.itemsize.width, height: DNItemView.itemsize.height))
-		self.alpha = isNextView ? 0.1 : 1
+		self.alpha = isNextView ? 0.5 : 1
 		
         let image = item.type.image()
         let imageView = UIImageView(frame: self.bounds)

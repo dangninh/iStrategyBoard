@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+typealias OutputCallback = (Dictionary<String, Any>)->Void
 class DNVideoCapture{
     static let framePerSec = 15
     var isRecording = false
@@ -50,10 +51,11 @@ class DNVideoCapture{
         
         source?.resume()
     }
-    func stop(){
+    func stop(callback: @escaping OutputCallback){
         self.output.completeOutput{ [weak self](outputInfo) in
             self?.source?.cancel()
             self?.isRecording = false
+            callback(outputInfo)
         }
     }
 }

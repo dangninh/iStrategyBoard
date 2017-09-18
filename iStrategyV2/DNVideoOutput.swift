@@ -8,7 +8,7 @@
 
 import Foundation
 import AVFoundation
-typealias OutputCallback = (Dictionary<String, Any>)->Void
+
 protocol DNVideoOutput {
     func setupOutput(with settings:Dictionary<String, Any>?, callback: @escaping (Bool)->Void)
     func pausedOutput()

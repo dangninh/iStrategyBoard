@@ -16,11 +16,12 @@
 		8F36CAB61F4D532C00062BC4 /* DNPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36CAB51F4D532C00062BC4 /* DNPlay.swift */; };
 		8F36CAB91F4D765C00062BC4 /* DNBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36CAB81F4D765C00062BC4 /* DNBoardViewModel.swift */; };
 		8F39D12D1F60F0140016E58D /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F39D12C1F60F0140016E58D /* Operators.swift */; };
+		8F41612F1F6FCED20065B75A /* DNPlayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F41612E1F6FCED20065B75A /* DNPlayListViewController.swift */; };
 		8F4569111F5D5993007B24C9 /* DNBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4569101F5D5993007B24C9 /* DNBoardView.swift */; };
 		8F4569131F5D5A5D007B24C9 /* DNItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4569121F5D5A5D007B24C9 /* DNItemView.swift */; };
 		8F7BF67F1F600007007FB132 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F7BF67E1F600007007FB132 /* AVFoundation.framework */; };
 		9474D5571EE25E4700D59BDE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9474D5561EE25E4700D59BDE /* AppDelegate.swift */; };
-		9474D5591EE25E4700D59BDE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9474D5581EE25E4700D59BDE /* ViewController.swift */; };
+		9474D5591EE25E4700D59BDE /* DNMainBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9474D5581EE25E4700D59BDE /* DNMainBoardViewController.swift */; };
 		9474D55C1EE25E4700D59BDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9474D55A1EE25E4700D59BDE /* Main.storyboard */; };
 		9474D55E1EE25E4700D59BDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9474D55D1EE25E4700D59BDE /* Assets.xcassets */; };
 		9474D5611EE25E4700D59BDE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9474D55F1EE25E4700D59BDE /* LaunchScreen.storyboard */; };
@@ -55,12 +56,13 @@
 		8F36CAB51F4D532C00062BC4 /* DNPlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNPlay.swift; sourceTree = "<group>"; };
 		8F36CAB81F4D765C00062BC4 /* DNBoardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNBoardViewModel.swift; sourceTree = "<group>"; };
 		8F39D12C1F60F0140016E58D /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		8F41612E1F6FCED20065B75A /* DNPlayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNPlayListViewController.swift; sourceTree = "<group>"; };
 		8F4569101F5D5993007B24C9 /* DNBoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNBoardView.swift; sourceTree = "<group>"; };
 		8F4569121F5D5A5D007B24C9 /* DNItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNItemView.swift; sourceTree = "<group>"; };
 		8F7BF67E1F600007007FB132 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9474D5531EE25E4700D59BDE /* iStrategyV2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iStrategyV2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9474D5561EE25E4700D59BDE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9474D5581EE25E4700D59BDE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9474D5581EE25E4700D59BDE /* DNMainBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNMainBoardViewController.swift; sourceTree = "<group>"; };
 		9474D55B1EE25E4700D59BDE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9474D55D1EE25E4700D59BDE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9474D5601EE25E4700D59BDE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -185,7 +187,8 @@
 		94C797CE1F1E630400240462 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				9474D5581EE25E4700D59BDE /* ViewController.swift */,
+				9474D5581EE25E4700D59BDE /* DNMainBoardViewController.swift */,
+				8F41612E1F6FCED20065B75A /* DNPlayListViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -382,7 +385,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		5390919F67DAF2721B3BEAB9 /* [CP] Embed Pods Frameworks */ = {
@@ -429,7 +432,8 @@
 				8F36CAB41F4D368400062BC4 /* DNScene.swift in Sources */,
 				8F39D12D1F60F0140016E58D /* Operators.swift in Sources */,
 				8F36CAB91F4D765C00062BC4 /* DNBoardViewModel.swift in Sources */,
-				9474D5591EE25E4700D59BDE /* ViewController.swift in Sources */,
+				9474D5591EE25E4700D59BDE /* DNMainBoardViewController.swift in Sources */,
+				8F41612F1F6FCED20065B75A /* DNPlayListViewController.swift in Sources */,
 				8F36CAB21F4D367400062BC4 /* DNItem.swift in Sources */,
 				9474D5571EE25E4700D59BDE /* AppDelegate.swift in Sources */,
 				8F36CAB61F4D532C00062BC4 /* DNPlay.swift in Sources */,

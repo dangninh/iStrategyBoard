@@ -36,6 +36,7 @@ class DNBoardViewModel{
     init(){
         play = DNPlay()
         play.id = DNPlay.nextID()
+        play.name = Date().description
         let newScene = DNScene()
         currentScene = Variable(newScene)
         play.scenes.append(newScene)
@@ -45,33 +46,32 @@ class DNBoardViewModel{
     }
     init(restore isRestore:Bool){
         if isRestore{
-            play = realm.objects(DNPlay.self).last ?? DNPlay()
-            currentSceneIndex = 0
-			if let scence = play.scenes.first{
-				currentScene = Variable(scence)
-			}else{
-				let scence = DNScene()
-				currentScene = Variable(scence)
-				try! realm.write {
-					play.scenes.append(scence)
-				}
-			}
-            try! realm.write {
-                realm.add(play,update:true)
+            if let play = DNPlay.activePlay(){
+                self.play = play
+                currentSceneIndex = 0
+                if let scence = play.scenes.first{
+                    currentScene = Variable(scence)
+                }else{
+                    let scence = DNScene()
+                    currentScene = Variable(scence)
+                    try! realm.write {
+                        play.scenes.append(scence)
+                    }
+                }
+                return
             }
         }
-        else{
-			play = DNPlay()
-			play.id = DNPlay.nextID()
-			let newScene = DNScene()
-			currentScene = Variable(newScene)
-			play.scenes.append(newScene)
-			try! realm.write {
-				realm.add(play)
-			}
+        //cannot load old play or not restoring => create new play
+        play = DNPlay()
+        play.id = DNPlay.nextID()
+        play.name = Date().description
+        let newScene = DNScene()
+        currentScene = Variable(newScene)
+        play.scenes.append(newScene)
+        try! realm.write {
+            realm.add(play)
         }
-		
-		
+        play.setActive()
     }
     init(with oldplay:DNPlay){
         play=oldplay

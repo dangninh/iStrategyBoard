@@ -15,8 +15,9 @@ enum FloatyTitle:String{
     case AddBall = "Add Ball"
     case AddCone = "Add Cone"
     case AddScene = "Add Scence"
+    case NewPlay = "New Play"
 }
-class ViewController: UIViewController {
+class DNMainBoardViewController: UIViewController {
     
     
     var capture:DNVideoCapture?
@@ -25,14 +26,17 @@ class ViewController: UIViewController {
     
 	override func viewDidLoad() {
         capture = DNVideoCapture(view: self.boardView)
-        self.boardView.viewModel = DNBoardViewModel(restore:true)
-        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(DNMainBoardViewController.listButtonTapped(_:)))
         self.createFloatMenu()
 		super.viewDidLoad()
         
 		// Do any additional setup after loading the view, typically from a nib.
 	}
-	
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.boardView.viewModel = DNBoardViewModel(restore:true)
+        self.navigationItem.title = self.boardView.viewModel?.play.name ?? ""
+    }
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
@@ -52,6 +56,8 @@ class ViewController: UIViewController {
 					self.boardView.viewModel?.add(item: DNSceneItem.newSceneItem(with:.Ball))
                 case .AddScene:
                     self.boardView.viewModel?.duplicateCurrentScene()
+                case .NewPlay:
+                    self.boardView.viewModel = DNBoardViewModel(restore:false)
                 default:
                     break
                 }
@@ -62,13 +68,13 @@ class ViewController: UIViewController {
 		floaty.addItem(title: FloatyTitle.AddBall.rawValue, handler: handler)
         floaty.addItem(title: FloatyTitle.AddCone.rawValue, handler: handler)
         floaty.addItem(title: FloatyTitle.AddScene.rawValue, handler: handler)
-        
+        floaty.addItem(title: FloatyTitle.NewPlay.rawValue, handler: handler)
         self.view.addSubview(floaty)
     }
     
     override func viewDidLayoutSubviews(){
         super.viewDidLayoutSubviews()
-        //self.boardViewModel?.refresh()
+        self.boardView.viewModel?.refresh()
     }
 	@IBAction func prevButtonTapped(_ sender: Any) {
 		self.boardView.viewModel?.previous()
@@ -79,6 +85,9 @@ class ViewController: UIViewController {
 	@IBAction func nextButtonTapped(_ sender: Any) {
 		self.boardView.viewModel?.next()
 	}
+    func listButtonTapped(_ sender: Any){
+        self.performSegue(withIdentifier: "gotolist", sender: nil)
+    }
 }
 extension FloatyItem{
 }

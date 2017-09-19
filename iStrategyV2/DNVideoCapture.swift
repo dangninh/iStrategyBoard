@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 typealias OutputCallback = (Dictionary<String, Any>)->Void
 class DNVideoCapture{
-    static let framePerSec = 15
+    static let framePerSec = 20
     var isRecording = false
     var queue : DispatchQueue?
     var source : DispatchSourceTimer?
@@ -80,7 +80,9 @@ extension UIImage{
         
         
         CVPixelBufferUnlockBaseAddress(buffer!, CVPixelBufferLockFlags(rawValue: 0));
-        
+        if(buffer == nil){
+            print("nilbuffer")
+        }
         return buffer;
     }
 }
@@ -93,17 +95,24 @@ extension UIView{
      
      */
     func layerToImage()->UIImage?{
+        
+        
         UIGraphicsBeginImageContext(CGSize(width:720,height:480))
         if let context = UIGraphicsGetCurrentContext(){
+        
             context.scaleBy(x: 720/self.bounds.size.width, y: 480/self.bounds.size.height);
             
             self.layer.presentation()?.render(in: context)
             
             let snapshotImage = UIGraphicsGetImageFromCurrentImageContext()
+            if(snapshotImage == nil){
+                print("nil snapshotImage")
+            }
             UIGraphicsEndImageContext()
             return snapshotImage;
         }
         UIGraphicsEndImageContext()
+        print("nil image")
         return nil
     }
     func toImage()->UIImage?{
@@ -111,6 +120,9 @@ extension UIView{
         self.drawHierarchy(in: CGRect(x:0,y:0,width:720,height:480), afterScreenUpdates: false)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext();
+        if(image == nil){
+            print("nil image ll")
+        }
         return image
     }
 }

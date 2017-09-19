@@ -22,14 +22,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imageView:TUm-xJ-YGa:image" translatesAutoresizingMaskIntoConstraints="NO" id="TUm-xJ-YGa">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pzR-0e-zTy">
                                 <rect key="frame" x="0.0" y="64" width="414" height="618"/>
-                                <variation key="heightClass=compact" image="field"/>
-                                <variation key="heightClass=regular" image="field_v"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pzR-0e-zTy" customClass="DNBoardView" customModule="iStrategyV2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="414" height="618"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imageView:TUm-xJ-YGa:image" translatesAutoresizingMaskIntoConstraints="NO" id="TUm-xJ-YGa">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="618"/>
+                                        <variation key="heightClass=compact" image="field"/>
+                                        <variation key="heightClass=regular" image="field_v"/>
+                                    </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6NX-FR-FHc" customClass="DNBoardView" customModule="iStrategyV2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="618"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="6NX-FR-FHc" secondAttribute="bottom" id="3ld-Zr-PLR"/>
+                                    <constraint firstItem="TUm-xJ-YGa" firstAttribute="top" secondItem="pzR-0e-zTy" secondAttribute="top" id="QLQ-Ib-r1F"/>
+                                    <constraint firstAttribute="trailing" secondItem="TUm-xJ-YGa" secondAttribute="trailing" id="WQa-sI-9Y4"/>
+                                    <constraint firstAttribute="bottom" secondItem="TUm-xJ-YGa" secondAttribute="bottom" id="mlO-6Y-VR8"/>
+                                    <constraint firstItem="6NX-FR-FHc" firstAttribute="top" secondItem="pzR-0e-zTy" secondAttribute="top" id="o5C-Sf-Xep"/>
+                                    <constraint firstItem="TUm-xJ-YGa" firstAttribute="leading" secondItem="pzR-0e-zTy" secondAttribute="leading" id="shQ-s1-TV7"/>
+                                    <constraint firstItem="6NX-FR-FHc" firstAttribute="leading" secondItem="pzR-0e-zTy" secondAttribute="leading" id="ww2-VX-08a"/>
+                                    <constraint firstAttribute="trailing" secondItem="6NX-FR-FHc" secondAttribute="trailing" id="xly-MB-rzb"/>
+                                </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UzE-9m-ij6">
                                 <rect key="frame" x="36" y="690" width="38" height="38"/>
@@ -153,7 +169,6 @@
                                 <variation key="heightClass=regular" constant="8"/>
                             </constraint>
                             <constraint firstAttribute="trailing" secondItem="2RH-VW-bZa" secondAttribute="trailing" constant="6" id="WgT-pJ-Zcr"/>
-                            <constraint firstItem="TUm-xJ-YGa" firstAttribute="leading" secondItem="pzR-0e-zTy" secondAttribute="leading" id="aE0-Wp-Oks"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UzE-9m-ij6" secondAttribute="bottom" constant="658" id="bR2-Uv-hQY">
                                 <variation key="heightClass=regular" constant="8"/>
                             </constraint>
@@ -165,9 +180,6 @@
                                 <variation key="heightClass=compact" constant="50"/>
                             </constraint>
                             <constraint firstItem="2RH-VW-bZa" firstAttribute="leading" secondItem="UzE-9m-ij6" secondAttribute="trailing" constant="16" id="n0v-Cc-vef"/>
-                            <constraint firstItem="TUm-xJ-YGa" firstAttribute="width" secondItem="pzR-0e-zTy" secondAttribute="width" id="oLU-wh-Lj0"/>
-                            <constraint firstItem="TUm-xJ-YGa" firstAttribute="top" secondItem="pzR-0e-zTy" secondAttribute="top" id="ofd-Ov-jcZ"/>
-                            <constraint firstItem="TUm-xJ-YGa" firstAttribute="height" secondItem="pzR-0e-zTy" secondAttribute="height" id="qkM-Qa-e77"/>
                             <constraint firstItem="Q0a-yp-avO" firstAttribute="leading" secondItem="2RH-VW-bZa" secondAttribute="trailing" constant="16" id="thR-9e-wsK"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="2RH-VW-bZa" secondAttribute="bottom" constant="8" id="wAF-nu-wpY"/>
                             <constraint firstAttribute="trailing" secondItem="UzE-9m-ij6" secondAttribute="trailing" constant="6" id="wDs-tG-hvC"/>
@@ -231,7 +243,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="FFB-Jc-TZf"/>
                     <connections>
-                        <outlet property="boardView" destination="pzR-0e-zTy" id="QeK-DF-r4a"/>
+                        <outlet property="boardView" destination="6NX-FR-FHc" id="Uav-S7-CBJ"/>
+                        <outlet property="videoView" destination="pzR-0e-zTy" id="PZJ-Zu-GH6"/>
                         <segue destination="c2M-ma-Zxo" kind="show" identifier="gotolist" id="SvY-YB-6nM"/>
                     </connections>
                 </viewController>

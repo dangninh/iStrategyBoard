@@ -9,6 +9,7 @@ target 'iStrategyV2' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
+  pod 'RxRealm'
 end
  
 post_install do |installer|

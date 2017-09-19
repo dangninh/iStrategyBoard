@@ -19,9 +19,8 @@ extension Reactive where Base: DNBoardView {
                 let paths = CGMutablePath()
                 
                 UIView.beginAnimations("rearangeViews", context: nil)
-                UIView.setAnimationDuration(0.2)
+                UIView.setAnimationDuration(0.3)
                 
-                //
                 for itemscene in curscene.sceneItems{
                     //find the item in current hashtable
 					if let myitem = itemscene.item{
@@ -58,8 +57,6 @@ extension Reactive where Base: DNBoardView {
 										view.addSubview(nextitemview)
 									}
 									
-									//myitem.type.color().set()
-									
 									path.lineWidth = 3.0
 									path.lineCapStyle = .butt
 									path.addLine(to: nextcenterpoint)
@@ -94,7 +91,8 @@ extension Reactive where Base: DNBoardView {
                 view.shapeLayer.lineDashPattern = [ 5.0, 6.0 ]
                 view.shapeLayer.path = paths
                 view.layer.addSublayer(view.shapeLayer)
-                //remove view no longer in the scene
+                
+                //remove views no longer in the scene
                 let items = curscene.sceneItems.flatMap({ $0.item })
                 for (item,itemview) in view.itemhash{
                     if !items.contains(item){
@@ -128,9 +126,15 @@ class DNBoardView:UIView{
     var viewModel : DNBoardViewModel?{
         didSet{
             let disposebag = DisposeBag()
+            //clean all current subview and hash
+            itemhash.removeAll()
+            nextitemhash.removeAll()
+            
+            for view in self.subviews{
+                view.removeFromSuperview()
+            }
+            
             if let vm = viewModel{
-                //Observable.from(object: vm.currentScene).bind(to: self.rx.scene).disposed(by: disposebag)
-                
                 vm.currentScene.asDriver().drive(self.rx.scene).disposed(by: disposebag)
             }
             self.disposeBag = disposebag

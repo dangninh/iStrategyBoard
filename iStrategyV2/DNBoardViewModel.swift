@@ -33,6 +33,7 @@ class DNBoardViewModel{
     var currentScene : Variable<DNScene>
     let realm = try! Realm()
 	var animateMode = false
+    var disposeBag = DisposeBag()
     init(){
         play = DNPlay()
         play.id = DNPlay.nextID()
@@ -86,17 +87,23 @@ class DNBoardViewModel{
 		currentSceneIndex = (currentSceneIndex+play.scenes.count-1)%play.scenes.count
 		currentScene.value = play.scenes[currentSceneIndex]
 	}
-	func playAnimate(){
+    func playAnimate(complete:(() -> Void)? = nil){
 		currentSceneIndex = 0
 		self.animateMode = true
 		currentScene.value = play.scenes[currentSceneIndex]
-		Observable<Int>.interval(0.5, scheduler: MainScheduler.instance).take(play.scenes.count).subscribe { event in
-			self.currentSceneIndex = event.element ?? 0
-			self.currentScene.value = self.play.scenes[self.currentSceneIndex]
+		Observable<Int>.interval(0.5, scheduler: MainScheduler.instance).take(play.scenes.count+1).subscribe { event in
+            if var index = event.element {
+                if index>=self.play.scenes.count{
+                    index = 0
+                }
+                self.currentSceneIndex = index
+                self.currentScene.value = self.play.scenes[self.currentSceneIndex]
+            }
 			if event.isCompleted{
 				self.animateMode = false
+                complete?()
 			}
-		}
+		}.disposed(by: disposeBag)
 	}
     func refresh(){
         currentScene.value = currentScene.value

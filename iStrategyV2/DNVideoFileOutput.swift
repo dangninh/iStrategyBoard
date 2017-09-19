@@ -85,23 +85,27 @@ class DNVideoFileOutput:DNVideoOutput{
         if !self.videoInput!.isReadyForMoreMediaData {
             return;
         }
-        queue?.async { [unowned self] in
-            let currentTime:CMTime = self.currentFrame == 0 ? kCMTimeZero : CMTimeMake(self.currentFrame,Int32(self.framePerSec))
-            
-            if !self.assetWriterPixelBufferInput!.append(buffer, withPresentationTime:currentTime) {
-                print("Problem appending pixel buffer at time: \(currentTime.value), status = \(self.fileWriter?.status ?? AVAssetWriterStatus.unknown), error = \(String(describing: (self.fileWriter!.error as? NSError)?.userInfo[NSUnderlyingErrorKey]))")
+        queue?.async { [weak self] in
+            if let wself = self{
+                let currentTime:CMTime = wself.currentFrame == 0 ? kCMTimeZero : CMTimeMake(wself.currentFrame,Int32(wself.framePerSec))
+                
+                if !wself.assetWriterPixelBufferInput!.append(buffer, withPresentationTime:currentTime) {
+                }
+                //CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: 0))
+                wself.currentFrame += 1
             }
-            //CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: 0))
-            self.currentFrame += 1
         }
         
     }
     func completeOutput(callback: @escaping OutputCallback){
         self.videoInput!.markAsFinished()
         self.fileWriter!.finishWriting { [weak self] () -> Void in
-            let outputInfo = ["file_url":self?.currentFileURL]
-            callback(outputInfo)
-            self?.currentFileURL = nil
+            if let cSelf = self, let url = cSelf.currentFileURL{
+                let outputInfo = ["file_url":url]
+                callback(outputInfo)
+                cSelf.currentFileURL = nil
+            }
+            
         }
     }
 }

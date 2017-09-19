@@ -36,4 +36,20 @@ class DNPlay: Object {
             self.active = true
         }
     }
+    func rename(newname:String){
+        let realm = try! Realm()
+        try! realm.write {
+            self.name = newname
+        }
+    }
+    func deleteRecord(){
+        let realm = try! Realm()
+        let isActive = self.active
+        try! realm.write {
+            realm.delete(self)
+            if isActive{
+                DNPlay.allPlays().first?.active = true
+            }
+        }
+    }
 }
